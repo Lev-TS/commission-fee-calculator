@@ -38,7 +38,7 @@ npm start ./path-to-your/file.json
 
 ## Test Suite
 
-Ran test:
+Run test:
 
 ```console
 npm test
