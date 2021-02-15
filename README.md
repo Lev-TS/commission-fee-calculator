@@ -31,7 +31,7 @@ To start the program, you should
 - Run the start script passing the path argument to local input file. Path should be relative to the task's root folder;
 
 ```console
-npm start test/mock.data.json
+npm start ./path-to-your/file.json
 ```
 
 - once the program is ranning, it will be watching the local file to detect changes. To stop listening click "ctrl+c"
