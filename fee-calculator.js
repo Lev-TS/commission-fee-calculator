@@ -19,14 +19,18 @@ class Calculator {
       const fee = (operationAmount * percents) / 100;
       return fee > minFee ? fee : minFee;
     }
-    // if userType is natural person
-    const { percents, week_limit: weekLimit } = this.config[cashOutNatUrl];
-    // limit not riched
-    if (accumulatedAmount + operationAmount <= weekLimit.amount) return 0;
-    // limit was riched
-    if (accumulatedAmount >= weekLimit.amount) return (operationAmount * percents) / 100;
-    // limit will be riched
-    return (((accumulatedAmount + operationAmount) % weekLimit.amount) * percents) / 100;
+
+    if (userType === 'natural') {
+      const { percents, week_limit: weekLimit } = this.config[cashOutNatUrl];
+      // limit not reached
+      if (accumulatedAmount + operationAmount <= weekLimit.amount) return 0;
+      // limit was reached
+      if (accumulatedAmount >= weekLimit.amount) return (operationAmount * percents) / 100;
+      // limit will be reached
+      return (((accumulatedAmount + operationAmount) % weekLimit.amount) * percents) / 100;
+    }
+
+    return process.stdout.write(`usertype ${userType}, is beyond the scope of this program\n`);
   }
 }
 

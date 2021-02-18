@@ -16,7 +16,6 @@ const FeeCalculator = require('./fee-calculator');
 const args = process.argv.slice(2);
 const filePath = path.join(__dirname, args[0]);
 
-// initiate cache
 const cache = new NodeCache();
 
 // Load existing data and log fees.
@@ -40,9 +39,13 @@ fs.readFile(filePath, 'utf8', async (error, content) => {
       date,
     } = input;
     if (type === 'cash_in') return write(calculator.getCashInFee(amount));
-    const accumulatedAmount = userType === 'natural' && getAccumulatedAmount(amount, date, userId, cache);
-    write(calculator.getCashOutFee(amount, userType, accumulatedAmount));
-    return cache.close();
+    if (type === 'cash_out') {
+      const accumulatedAmount = userType === 'natural' && getAccumulatedAmount(amount, date, userId, cache);
+      write(calculator.getCashOutFee(amount, userType, accumulatedAmount));
+      return cache.close();
+    }
+
+    return process.stdout.write(`operation type "${userType}", is beyond the scope of this program\n`);
   };
 
   // log out fees for operations that are already in the file
